@@ -2,8 +2,8 @@
 
 
 ### Macros ###
-mem_server_ip="10.0.0.2"
-mem_server_port="9400"
+#mem_server_ip="10.0.0.2"
+#mem_server_port="9400"
 
 if [ -z "${HOME}" ]; then
 	echo "set home_dir first."
@@ -12,9 +12,9 @@ else
 	home_dir=${HOME}
 fi
 
-swap_file="${home_dir}/swapfile"
+#swap_file="${home_dir}/swapfile"
 # The swap file/partition size should be equal to the whole size of remote memory
-SWAP_PARTITION_SIZE_GB="48"
+#SWAP_PARTITION_SIZE_GB="48"
 
 echo " !! Warning, check the parameters below : "
 echo " Assigned memory server IP ${mem_server_ip} Port ${mem_server_port}"
@@ -34,19 +34,7 @@ if [[ -z "${action}" ]]; then
 fi
 
 function close_swap_partition() {
-	# For ubuntu, usually a file is used as swap space
-	swap_bd=$(swapon -s | grep "swap.img" | cut -d " " -f 1)
-	# the name can also be swapfile
-	if [ -z "${swap_bd}" ]; then
-		swap_bd=$(swapon -s | grep "swapfile" | cut -d " " -f 1)
-	fi
-
-	if [[ -z "${swap_bd}" ]]; then
-		echo "Nothing to close."
-	else
-		echo "Swap Partition to close :${swap_bd} "
-		sudo swapoff "${swap_bd}"
-	fi
+	swapoff -a
 
 	# Check
 	echo "Current swap partition:"
